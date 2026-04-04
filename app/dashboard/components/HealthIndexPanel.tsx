@@ -57,7 +57,7 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
                 <InformationCircleIcon className="h-4 w-4" />
               </span>
             </TooltipTrigger>
-            <TooltipContent side="right" className="max-w-xs text-xs leading-relaxed !bg-black/90 !text-white/90 backdrop-blur-sm border border-white/10 [&_[data-slot]]:!bg-black/90">
+            <TooltipContent side="right" className="max-w-xs text-xs leading-relaxed">
               Формула: Σ(вес × оценка подсистемы) − штраф за алерты. Веса: двигатель 30%, электрика 25%, тормоза 25%, топливо 20%.
             </TooltipContent>
           </Tooltip>
