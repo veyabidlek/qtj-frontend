@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
+  Legend,
 } from "recharts";
 import type { TelemetrySnapshot } from "@/types/telemetry";
 import { TIME_WINDOWS, CHART_COLORS } from "@/config/constants";
@@ -82,7 +83,7 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "rgba(0,0,0,0.7)",
+              backgroundColor: "rgba(15,23,42,0.9)",
               backdropFilter: "blur(12px)",
               border: "1px solid rgba(255,255,255,0.15)",
               borderRadius: "10px",
@@ -90,6 +91,7 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
               fontSize: 11,
             }}
           />
+          <Legend wrapperStyle={{ fontSize: 10, color: "rgba(255,255,255,0.7)", paddingTop: 4 }} />
           {series.map((s) => (
             <Line
               key={s.key}

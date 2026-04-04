@@ -10,6 +10,7 @@ import {
   MOCK_TICK_INTERVAL,
   RECONNECT,
   THRESHOLDS,
+  ERROR_CODES,
 } from "@/config/constants";
 import { clampValue } from "@/lib/smoothing";
 import { logger } from "@/lib/logger";
@@ -86,6 +87,7 @@ function checkAlerts(snapshot: TelemetrySnapshot): TelemetryAlert[] {
     const isFuelOrVoltage = check.key === "fuelLevel" || check.key === "voltage" || check.key === "brakePressure";
 
     if (isFuelOrVoltage) {
+      const ec = ERROR_CODES[check.key];
       if (check.value <= threshold.critical) {
         alerts.push({
           id: `${check.key}-${snapshot.timestamp}`,
@@ -95,6 +97,7 @@ function checkAlerts(snapshot: TelemetrySnapshot): TelemetryAlert[] {
           parameter: check.key,
           value: check.value,
           threshold: threshold.critical,
+          errorCode: ec?.code,
         });
       } else if (check.value <= threshold.warning) {
         alerts.push({
@@ -105,9 +108,11 @@ function checkAlerts(snapshot: TelemetrySnapshot): TelemetryAlert[] {
           parameter: check.key,
           value: check.value,
           threshold: threshold.warning,
+          errorCode: ec?.code,
         });
       }
     } else {
+      const ec = ERROR_CODES[check.key];
       if (check.value >= threshold.critical) {
         alerts.push({
           id: `${check.key}-${snapshot.timestamp}`,
@@ -117,6 +122,7 @@ function checkAlerts(snapshot: TelemetrySnapshot): TelemetryAlert[] {
           parameter: check.key,
           value: check.value,
           threshold: threshold.critical,
+          errorCode: ec?.code,
         });
       } else if (check.value >= threshold.warning) {
         alerts.push({
@@ -127,6 +133,7 @@ function checkAlerts(snapshot: TelemetrySnapshot): TelemetryAlert[] {
           parameter: check.key,
           value: check.value,
           threshold: threshold.warning,
+          errorCode: ec?.code,
         });
       }
     }

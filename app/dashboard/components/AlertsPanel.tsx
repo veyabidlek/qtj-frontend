@@ -53,7 +53,12 @@ function AlertsPanelFull({ alerts, maxItems = 20 }: AlertsPanelProps) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-hud-text truncate">{alert.message}</p>
-                    <p className="text-[10px] text-hud-muted">{formatTimestamp(alert.timestamp)}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <p className="text-[10px] text-hud-muted">{formatTimestamp(alert.timestamp)}</p>
+                      {alert.errorCode && (
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-white/60">{alert.errorCode}</span>
+                      )}
+                    </div>
                   </div>
                   <span className={`text-[10px] font-mono ${config.color}`}>
                     {formatMetricValue(alert.value, 1)}
@@ -106,6 +111,9 @@ function LatestAlertInner({ alerts, onViewAll }: AlertsPanelProps) {
           <p className="text-sm text-white">{latest.message}</p>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-[10px] text-hud-muted">{formatTimestamp(latest.timestamp)}</span>
+            {latest.errorCode && (
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-white/60">{latest.errorCode}</span>
+            )}
             <span className={`text-xs font-mono font-medium ${config.color}`}>
               {formatMetricValue(latest.value, 1)}
             </span>

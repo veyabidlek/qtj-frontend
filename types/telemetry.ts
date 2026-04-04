@@ -31,4 +31,5 @@ export interface TelemetryAlert {
   parameter: string;
   value: number;
   threshold: number;
+  errorCode?: string;
 }

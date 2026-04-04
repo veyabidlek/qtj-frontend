@@ -1,8 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useDashboardData } from "../hooks/useDashboardData";
+import { useRouteProgress } from "../hooks/useRouteProgress";
+import { useReplay } from "@/hooks/useReplay";
 import {
   SunIcon,
   MoonIcon,
@@ -12,29 +13,19 @@ import {
 } from "@heroicons/react/24/outline";
 import { useTheme } from "next-themes";
 import ErrorBoundary from "./ErrorBoundary";
-import HealthGauge from "./HealthGauge";
-import SpeedGauge from "./SpeedGauge";
-import SpeedCard from "./SpeedCard";
-import MetricsPanel from "./MetricsPanel";
-import TrendCharts, {
-  TRACTION_SERIES,
-  RESOURCES_SERIES,
-  ENGINE_SERIES,
-} from "./TrendCharts";
-import AlertsPanel, { LatestAlert } from "./AlertsPanel";
-import MetricCard from "./MetricCard";
+import TrendCharts, { ENGINE_SERIES } from "./TrendCharts";
+import { LatestAlert } from "./AlertsPanel";
 import Sidebar from "./Sidebar";
 import QuickMetrics from "./QuickMetrics";
 import SystemStatus from "./SystemStatus";
-import {
-  ThermometerIcon,
-  GaugeIcon,
-  FuelIcon,
-} from "@/components/icons/TrainIcons";
+import SpeedCard from "./SpeedCard";
 import { formatMetricValue } from "@/lib/formatters";
 import HealthIndexPanel from "./HealthIndexPanel";
-
-const RouteMap = dynamic(() => import("./RouteMap"), { ssr: false });
+import ReplaySlider from "./ReplaySlider";
+import TractionTab from "./tabs/TractionTab";
+import ResourcesTab from "./tabs/ResourcesTab";
+import MonitoringTab from "./tabs/MonitoringTab";
+import ContextTab from "./tabs/ContextTab";
 
 export default function DashboardShell() {
   const { snapshot, history, alerts, status, health } = useDashboardData();
@@ -42,6 +33,16 @@ export default function DashboardShell() {
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const replay = useReplay(history, snapshot, alerts);
+  const eSnap = replay.effectiveSnapshot;
+  const eHist = replay.effectiveHistory;
+  const eAlerts = replay.effectiveAlerts;
+
+  const routeProgress = useRouteProgress(
+    eSnap?.position ?? { lat: 43.238, lng: 76.946 },
+    eSnap?.speed ?? 0
+  );
 
   useEffect(() => setMounted(true), []);
 
@@ -64,8 +65,6 @@ export default function DashboardShell() {
       </div>
     );
   }
-
-  const positionHistory = history.map((s) => s.position);
 
   return (
     <div className="flex min-h-screen text-white transition-colors duration-200">
@@ -272,210 +271,27 @@ export default function DashboardShell() {
         )}
 
         {/* ═══ OTHER TABS ═══ */}
-        {activeTab !== "overview" && (
-          <div className="p-4 lg:p-5 pt-14">
+        {activeTab !== "overview" && eSnap && health && (
+          <div className="p-4 lg:p-5 pt-14 flex flex-col gap-4" role="tabpanel" aria-label={activeTab}>
             {activeTab === "traction" && (
-              <div className="space-y-4">
-                <ErrorBoundary>
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div className="glass-card p-6 flex items-center justify-center">
-                      <SpeedGauge speed={snapshot.speed} />
-                    </div>
-                    <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <MetricCard
-                        label="Скорость"
-                        value={snapshot.speed}
-                        unit="км/ч"
-                        icon="Gauge"
-                        decimals={0}
-                        sparklineData={history.slice(-20).map((s) => s.speed)}
-                      />
-                      <MetricCard
-                        label="Тяговое усилие"
-                        value={snapshot.tractionEffort}
-                        unit="кН"
-                        icon="Activity"
-                        decimals={0}
-                        sparklineData={history
-                          .slice(-20)
-                          .map((s) => s.tractionEffort)}
-                      />
-                      <MetricCard
-                        label="Давление тормозов"
-                        value={snapshot.brakePressure}
-                        unit="МПа"
-                        icon="Gauge"
-                        decimals={2}
-                        sparklineData={history
-                          .slice(-20)
-                          .map((s) => s.brakePressure)}
-                      />
-                    </div>
-                  </div>
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <TrendCharts
-                    history={history}
-                    series={TRACTION_SERIES}
-                    title="Тяга и движение"
-                  />
-                </ErrorBoundary>
-              </div>
+              <TractionTab snapshot={eSnap} history={eHist} currentSpeedLimit={routeProgress.currentSpeedLimit} />
             )}
-
             {activeTab === "resources" && (
-              <div className="space-y-4">
-                <ErrorBoundary>
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-                    <MetricCard
-                      label="Топливо"
-                      value={snapshot.fuelLevel}
-                      unit="%"
-                      icon="Fuel"
-                      decimals={0}
-                      sparklineData={history.slice(-20).map((s) => s.fuelLevel)}
-                    />
-                    <MetricCard
-                      label="Расход топлива"
-                      value={snapshot.fuelConsumption}
-                      unit="л/ч"
-                      icon="Fuel"
-                      decimals={0}
-                      sparklineData={history
-                        .slice(-20)
-                        .map((s) => s.fuelConsumption)}
-                    />
-                    <MetricCard
-                      label="Напряжение"
-                      value={snapshot.voltage}
-                      unit="кВ"
-                      icon="Zap"
-                      decimals={1}
-                      sparklineData={history.slice(-20).map((s) => s.voltage)}
-                    />
-                    <MetricCard
-                      label="Ток"
-                      value={snapshot.current}
-                      unit="А"
-                      icon="Zap"
-                      decimals={0}
-                      sparklineData={history.slice(-20).map((s) => s.current)}
-                    />
-                  </div>
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <TrendCharts
-                    history={history}
-                    series={RESOURCES_SERIES}
-                    title="Ресурсы"
-                  />
-                </ErrorBoundary>
-              </div>
+              <ResourcesTab snapshot={eSnap} history={eHist} />
             )}
-
             {activeTab === "monitoring" && (
-              <div className="space-y-4">
-                <ErrorBoundary>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="glass-card p-6 flex items-center justify-center">
-                      <HealthGauge score={health.score} grade={health.grade} />
-                    </div>
-                    <SystemStatus
-                      breakdown={health.breakdown}
-                      health={health}
-                    />
-                  </div>
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-                    <MetricCard
-                      label="Температура двигателя"
-                      value={snapshot.temperature}
-                      unit="°C"
-                      icon="Thermometer"
-                      decimals={1}
-                      sparklineData={history
-                        .slice(-20)
-                        .map((s) => s.temperature)}
-                    />
-                    <MetricCard
-                      label="Температура масла"
-                      value={snapshot.oilTemperature}
-                      unit="°C"
-                      icon="Thermometer"
-                      decimals={1}
-                      sparklineData={history
-                        .slice(-20)
-                        .map((s) => s.oilTemperature)}
-                    />
-                    <MetricCard
-                      label="Вибрация"
-                      value={snapshot.vibration}
-                      unit="мм/с"
-                      icon="Activity"
-                      decimals={1}
-                      sparklineData={history.slice(-20).map((s) => s.vibration)}
-                    />
-                    <MetricCard
-                      label="КПД"
-                      value={snapshot.efficiency}
-                      unit="%"
-                      icon="Gauge"
-                      decimals={0}
-                      sparklineData={history
-                        .slice(-20)
-                        .map((s) => s.efficiency)}
-                    />
-                  </div>
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <TrendCharts
-                    history={history}
-                    series={ENGINE_SERIES}
-                    title="Мониторинг узлов"
-                  />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <AlertsPanel alerts={alerts} maxItems={50} />
-                </ErrorBoundary>
-              </div>
+              <MonitoringTab snapshot={eSnap} history={eHist} alerts={eAlerts} health={health} />
+            )}
+            {activeTab === "context" && (
+              <ContextTab snapshot={eSnap} history={eHist} routeProgress={routeProgress} />
             )}
 
-            {activeTab === "context" && (
-              <div className="space-y-4">
-                <ErrorBoundary>
-                  <RouteMap
-                    position={snapshot.position}
-                    positionHistory={positionHistory}
-                  />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                    <MetricCard
-                      label="Скорость"
-                      value={snapshot.speed}
-                      unit="км/ч"
-                      icon="Gauge"
-                      decimals={0}
-                    />
-                    <MetricCard
-                      label="КПД"
-                      value={snapshot.efficiency}
-                      unit="%"
-                      icon="Gauge"
-                      decimals={0}
-                    />
-                    <MetricCard
-                      label="Топливо"
-                      value={snapshot.fuelLevel}
-                      unit="%"
-                      icon="Fuel"
-                      decimals={0}
-                    />
-                  </div>
-                </ErrorBoundary>
-              </div>
-            )}
+            {/* Replay slider */}
+            <ReplaySlider
+              history={history}
+              replayTimestamp={replay.replayTimestamp}
+              onTimestampChange={replay.setReplayTimestamp}
+            />
           </div>
         )}
       </main>

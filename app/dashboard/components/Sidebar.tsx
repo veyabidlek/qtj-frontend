@@ -47,7 +47,7 @@ function SidebarInner({ activeTab, onTabChange }: SidebarProps) {
       />
 
       {/* Navigation */}
-      <nav className="flex-1 flex flex-col items-center gap-2 pt-4">
+      <nav className="flex-1 flex flex-col items-center gap-2 pt-4" role="tablist" aria-label="Навигация по разделам">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -55,8 +55,17 @@ function SidebarInner({ activeTab, onTabChange }: SidebarProps) {
           return (
             <Tooltip key={item.id}>
               <TooltipTrigger
+                role="tab"
+                aria-selected={isActive}
+                aria-label={item.label}
                 onClick={() => onTabChange(item.id)}
-                className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onTabChange(item.id);
+                  }
+                }}
+                className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none ${
                   isActive
                     ? "glass-card text-white shadow-lg"
                     : "text-white/60 hover:text-white hover:bg-white/10"
