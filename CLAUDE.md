@@ -165,38 +165,29 @@ export default function MetricCard({ label, value, unit }: MetricCardProps) {
 
 47. Use Tailwind CSS. No separate CSS files, no CSS modules, no styled-components. Extend `tailwind.config.ts` with the custom color palette below.
 48. Default to light theme. Dark theme is fully supported. Use `next-themes` with `defaultTheme="light"`.
-49. Custom color palette — defined via CSS variables in `globals.css` under `:root` (light) and `.dark` (dark):
+49. HUD color palette — defined via CSS variables in `globals.css` under `:root` (light) and `.dark` (dark). All text is white in both themes since panels overlay a photo/gradient background:
 
 ```
-Light theme (default):
-  --db-bg: #f2f2f7        // cool light gray page background
-  --db-surface: #ffffff    // white card/panel background
-  --db-border: #e5e5ea     // subtle gray borders
-  --db-accent: #1c1c1e     // near-black primary accent (active states, buttons)
-  --db-accent-dim: #8e8e93 // dimmed gray for secondary elements
-  --db-text: #1c1c1e       // near-black primary text
-  --db-text-muted: #8e8e93 // gray secondary text
-  --db-success: #34c759    // green — normal status
-  --db-warning: #ff9f0a    // orange — attention status
-  --db-danger: #ff3b30     // red — critical status
-
-Dark theme:
-  --db-bg: #0a0a0a         // near-black page background
-  --db-surface: #1c1c1e    // dark gray card background
-  --db-border: #38383a     // subtle dark borders
-  --db-accent: #ffffff     // white primary accent
-  --db-text: #f5f5f5       // light text
+Both themes (white text on glass panels):
+  --hud-text: #ffffff                    // primary text — full white
+  --hud-muted: rgba(255,255,255,0.6)     // secondary/label text (light), 0.5 (dark)
+  --hud-glass: rgba(255,255,255,0.1)     // glass tint (light), rgba(0,0,0,0.3) (dark)
+  --hud-glass-border: rgba(255,255,255,0.18) // glass border (light), 0.1 (dark)
+  --hud-success: #34c759 / #30d158      // green — normal status
+  --hud-warning: #ff9f0a                 // orange — attention status
+  --hud-danger: #ff3b30 / #ff453a       // red — critical status
 ```
 
-50. Card styling: use the `.dash-card` CSS class which provides white background, rounded-2xl corners, subtle box-shadow, and thin border. No glassmorphism or glow effects — keep the design clean and minimal like the reference.
-51. Active sidebar icon: white background with `shadow-md` and `ring-1`. No glow effects.
-52. Text hierarchy: metric labels in `text-dashboard-textMuted text-xs uppercase tracking-wider`. Metric values in `font-mono text-2xl font-bold text-dashboard-text`. Units in `text-dashboard-textMuted text-sm`.
+50. Card styling: use the `.glass-card` CSS class (dark translucent panel with backdrop blur). Light theme uses `rgba(15,23,42,0.75)` background; dark theme uses `rgba(0,0,0,0.45)`. Both have `backdrop-filter: blur(24px)`. `.dash-card` is a legacy alias with identical styles.
+51. Active sidebar icon: `glass-card` background with `shadow-lg`. Inactive icons use `text-white/60`.
+52. Text hierarchy: metric labels use `text-hud-muted text-xs uppercase tracking-wider`. Metric values use `font-mono text-2xl font-bold text-hud-text`. Units use `text-hud-muted text-sm`. Never use `text-dashboard-*` classes (deprecated/undefined).
 53. Minimum font size: 14px (`text-sm`). For metric values use `text-2xl` or larger. For the health index number use `text-6xl` or larger.
 54. Use `font-mono` for all numeric telemetry values (speed, temperature, voltage, etc.) so digits don't jump when values change.
 55. Gauge and circular indicators: use SVG with CSS transitions for smooth animation. No canvas, no external gauge libraries.
-56. Chart colors: primary line `#3b82f6` (blue), secondary `#8b5cf6` (violet), tertiary `#f59e0b` (amber). Chart grid lines use `var(--db-border)`. Chart background transparent.
+56. Chart colors: primary line `#3b82f6` (blue), secondary `#8b5cf6` (violet), tertiary `#f59e0b` (amber). Chart grid lines use `rgba(255,255,255,0.08)`. Chart background transparent. Axis tick fill: `var(--hud-muted)`.
 57. Responsive: design for 1920x1080 primary. Must be usable at 1366x768 (laptop). Use Tailwind breakpoints, not media queries.
 58. All colors for severity/status must work for colorblind users. Pair color with icon and/or text label. Never rely on color alone.
+59. Text opacity minimums: labels/secondary text use `white/70` minimum, not `white/40` or `white/50`. Tertiary hints (units, counts) use `white/60` minimum. This ensures readability against the bright daytime background photo.
 
 ## Performance Rules
 
