@@ -100,7 +100,7 @@
   --hud-warning: #ff9f0a;
   --hud-danger: #ff3b30;
 
-  --hud-bg-image: url('/backgrounds/bg-almaty-day.png');
+  --hud-bg-image: url("/backgrounds/bg-almaty-day.png");
 }
 
 /* ── Dark theme (night background) ── */
@@ -145,7 +145,12 @@
   --hud-warning: #ff9f0a;
   --hud-danger: #ff453a;
 
-  --hud-bg-image: linear-gradient(135deg, #0a1628 0%, #1a0a28 50%, #0a1628 100%);
+  --hud-bg-image: linear-gradient(
+    135deg,
+    #0a1628 0%,
+    #1a0a28 50%,
+    #0a1628 100%
+  );
 }
 
 @layer base {
@@ -177,20 +182,28 @@
 
 /* Glass card — transparent panel over background */
 .glass-card {
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dark .glass-card {
+  background: rgba(0, 0, 0, 0.45);
 }
 
 /* Legacy alias */
 .dash-card {
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dark .dash-card {
+  background: rgba(0, 0, 0, 0.45);
 }

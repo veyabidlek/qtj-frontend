@@ -47,7 +47,7 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
   return (
     <div className="glass-card px-5 py-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-white/50 uppercase tracking-widest">
+        <h3 className="text-sm font-medium text-white/80 uppercase tracking-widest">
           Индекс здоровья
         </h3>
         <TooltipProvider>
@@ -93,7 +93,7 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
           <p className={`text-lg font-semibold ${getStatusColor(health.score)}`}>
             {getStatusLabel(health.score)}
           </p>
-          <p className="text-xs text-white/40 mt-1">
+          <p className="text-xs text-white/70 mt-1">
             Интегральный показатель состояния локомотива на основе взвешенных параметров подсистем
           </p>
         </div>
@@ -110,8 +110,8 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
             <div key={key}>
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-white/70">{SYSTEM_LABELS[key]}</span>
-                  <span className="text-[10px] text-white/30 font-mono">({weight}%)</span>
+                  <span className="text-xs text-white/90">{SYSTEM_LABELS[key]}</span>
+                  <span className="text-[10px] text-white/50 font-mono">({weight}%)</span>
                 </div>
                 <span className="text-xs font-mono font-medium text-white">{Math.round(value)}%</span>
               </div>
@@ -129,11 +129,11 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
       {/* Top factors */}
       {health.topFactors.length > 0 && (
         <div>
-          <p className="text-xs text-white/40 uppercase tracking-wider mb-2">Ключевые факторы</p>
+          <p className="text-xs text-white/70 uppercase tracking-wider mb-2">Ключевые факторы</p>
           <div className="space-y-1.5">
             {health.topFactors.slice(0, 3).map((factor, i) => (
               <div key={i} className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-white/5">
-                <span className="text-xs text-white/70">{factor.parameter}</span>
+                <span className="text-xs text-white/90">{factor.parameter}</span>
                 <div className="flex items-center gap-2">
                   <span className={`text-[10px] font-medium ${
                     factor.status === "normal" ? "text-green-400" :
@@ -142,7 +142,7 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
                     {factor.status === "normal" ? "Норма" :
                      factor.status === "warning" ? "Внимание" : "Критично"}
                   </span>
-                  <span className="text-[10px] font-mono text-white/40">
+                  <span className="text-[10px] font-mono text-white/60">
                     {factor.impact > 0 ? "−" : "+"}{Math.abs(factor.impact).toFixed(1)}
                   </span>
                 </div>

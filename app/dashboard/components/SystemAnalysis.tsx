@@ -35,8 +35,8 @@ function SystemAnalysisInner({ breakdown }: SystemAnalysisProps) {
   );
 
   return (
-    <div className="neu-card p-4">
-      <h3 className="text-dashboard-textMuted text-xs uppercase tracking-wider mb-3">
+    <div className="glass-card p-4">
+      <h3 className="text-hud-muted text-xs uppercase tracking-wider mb-3">
         Анализ систем
       </h3>
       <ResponsiveContainer width="100%" height={180}>
@@ -44,14 +44,14 @@ function SystemAnalysisInner({ breakdown }: SystemAnalysisProps) {
           <XAxis
             type="number"
             domain={[0, 100]}
-            tick={{ fill: "var(--db-text-muted)", fontSize: 11 }}
+            tick={{ fill: "var(--hud-muted)", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
             type="category"
             dataKey="name"
-            tick={{ fill: "var(--db-text-muted)", fontSize: 12 }}
+            tick={{ fill: "var(--hud-muted)", fontSize: 12 }}
             axisLine={false}
             tickLine={false}
             width={80}

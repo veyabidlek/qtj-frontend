@@ -92,7 +92,7 @@ function LatestAlertInner({ alerts, onViewAll }: AlertsPanelProps) {
           Последний алерт
         </h3>
         {alerts.length > 1 && (
-          <span className="text-[10px] text-white/30 font-mono">
+          <span className="text-[10px] text-white/50 font-mono">
             +{alerts.length - 1}
           </span>
         )}

@@ -69,13 +69,13 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
           <CartesianGrid stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
           <XAxis
             dataKey="time"
-            tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }}
+            tick={{ fill: "rgba(255,255,255,0.7)", fontSize: 9 }}
             axisLine={false}
             tickLine={false}
             interval="preserveStartEnd"
           />
           <YAxis
-            tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }}
+            tick={{ fill: "rgba(255,255,255,0.7)", fontSize: 9 }}
             axisLine={false}
             tickLine={false}
             width={35}

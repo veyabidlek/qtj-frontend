@@ -184,9 +184,9 @@ export default function DashboardShell() {
               {/* Bottom center: Route */}
               <div className="flex flex-col gap-3">
                 <div className="glass-card px-5 py-3 flex items-center gap-6">
-                  <MapPinIcon className="h-5 w-5 text-white/50 shrink-0" />
+                  <MapPinIcon className="h-5 w-5 text-white/70 shrink-0" />
                   <div>
-                    <p className="text-[10px] text-white/50 uppercase tracking-widest">
+                    <p className="text-[10px] text-white/70 uppercase tracking-widest">
                       Маршрут
                     </p>
                     <p className="text-sm font-semibold text-white">
@@ -195,7 +195,7 @@ export default function DashboardShell() {
                   </div>
                   <div className="h-6 w-px bg-white/15" />
                   <div>
-                    <p className="text-[10px] text-white/50 uppercase tracking-widest">
+                    <p className="text-[10px] text-white/70 uppercase tracking-widest">
                       Регион
                     </p>
                     <p className="text-sm font-medium text-white">
@@ -204,7 +204,7 @@ export default function DashboardShell() {
                   </div>
                   <div className="h-6 w-px bg-white/15" />
                   <div>
-                    <p className="text-[10px] text-white/50 uppercase tracking-widest">
+                    <p className="text-[10px] text-white/70 uppercase tracking-widest">
                       След. станция
                     </p>
                     <p className="text-sm font-medium text-white">Капшагай</p>
@@ -240,30 +240,30 @@ export default function DashboardShell() {
               {/* Efficiency + Traction + Current row */}
               <div className="grid grid-cols-3 gap-2">
                 <div className="glass-card px-3 py-2.5 text-center">
-                  <p className="text-[9px] text-white/50 uppercase tracking-widest">
+                  <p className="text-[9px] text-white/70 uppercase tracking-widest">
                     КПД
                   </p>
                   <p className="font-mono text-xl font-bold text-white leading-none mt-1">
                     {Math.round(snapshot.efficiency)}
-                    <span className="text-white/40 text-xs">%</span>
+                    <span className="text-white/60 text-xs">%</span>
                   </p>
                 </div>
                 <div className="glass-card px-3 py-2.5 text-center">
-                  <p className="text-[9px] text-white/50 uppercase tracking-widest">
+                  <p className="text-[9px] text-white/70 uppercase tracking-widest">
                     Тяга
                   </p>
                   <p className="font-mono text-xl font-bold text-white leading-none mt-1">
                     {formatMetricValue(snapshot.tractionEffort, 0)}
-                    <span className="text-white/40 text-xs">кН</span>
+                    <span className="text-white/60 text-xs">кН</span>
                   </p>
                 </div>
                 <div className="glass-card px-3 py-2.5 text-center">
-                  <p className="text-[9px] text-white/50 uppercase tracking-widest">
+                  <p className="text-[9px] text-white/70 uppercase tracking-widest">
                     Ток
                   </p>
                   <p className="font-mono text-xl font-bold text-white leading-none mt-1">
                     {formatMetricValue(snapshot.current, 0)}
-                    <span className="text-white/40 text-xs">А</span>
+                    <span className="text-white/60 text-xs">А</span>
                   </p>
                 </div>
               </div>

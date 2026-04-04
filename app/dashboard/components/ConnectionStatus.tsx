@@ -11,19 +11,19 @@ interface ConnectionStatusProps {
 function ConnectionStatusInner({ status }: ConnectionStatusProps) {
   const config = {
     connected: {
-      color: "bg-dashboard-success",
+      color: "bg-hud-success",
       icon: WifiIcon,
       label: "Подключено",
       pulse: false,
     },
     reconnecting: {
-      color: "bg-dashboard-warning",
+      color: "bg-hud-warning",
       icon: WifiIcon,
       label: "Переподключение...",
       pulse: true,
     },
     disconnected: {
-      color: "bg-dashboard-danger",
+      color: "bg-hud-danger",
       icon: SignalSlashIcon,
       label: "Отключено",
       pulse: false,
@@ -40,8 +40,8 @@ function ConnectionStatusInner({ status }: ConnectionStatusProps) {
           <div className={`absolute inset-0 h-2.5 w-2.5 rounded-full ${config.color} animate-ping`} />
         )}
       </div>
-      <Icon className="h-4 w-4 text-dashboard-textMuted" />
-      <span className="text-xs text-dashboard-textMuted hidden sm:inline">
+      <Icon className="h-4 w-4 text-hud-muted" />
+      <span className="text-xs text-hud-muted hidden sm:inline">
         {config.label}
       </span>
     </div>
