@@ -1,0 +1,196 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* HUD palette */
+  --color-hud-text: var(--hud-text);
+  --color-hud-muted: var(--hud-muted);
+  --color-hud-glass: var(--hud-glass);
+  --color-hud-glass-border: var(--hud-glass-border);
+  --color-hud-success: var(--hud-success);
+  --color-hud-warning: var(--hud-warning);
+  --color-hud-danger: var(--hud-danger);
+}
+
+/* ── Light theme (day background) ── */
+:root {
+  --background: transparent;
+  --foreground: #ffffff;
+  --card: rgba(255, 255, 255, 0.12);
+  --card-foreground: #ffffff;
+  --popover: rgba(255, 255, 255, 0.15);
+  --popover-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #0a0a0a;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --secondary-foreground: #ffffff;
+  --muted: rgba(255, 255, 255, 0.08);
+  --muted-foreground: rgba(255, 255, 255, 0.6);
+  --accent: rgba(255, 255, 255, 0.15);
+  --accent-foreground: #ffffff;
+  --destructive: #ff3b30;
+  --border: rgba(255, 255, 255, 0.2);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: rgba(255, 255, 255, 0.5);
+  --chart-1: #ffffff;
+  --chart-2: rgba(255, 255, 255, 0.7);
+  --chart-3: rgba(255, 255, 255, 0.5);
+  --chart-4: rgba(255, 255, 255, 0.3);
+  --chart-5: rgba(255, 255, 255, 0.15);
+  --radius: 0.75rem;
+  --sidebar: transparent;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: rgba(255, 255, 255, 0.15);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.2);
+  --sidebar-ring: rgba(255, 255, 255, 0.5);
+
+  --hud-text: #ffffff;
+  --hud-muted: rgba(255, 255, 255, 0.6);
+  --hud-glass: rgba(255, 255, 255, 0.1);
+  --hud-glass-border: rgba(255, 255, 255, 0.18);
+  --hud-success: #34c759;
+  --hud-warning: #ff9f0a;
+  --hud-danger: #ff3b30;
+
+  --hud-bg-image: url('/backgrounds/bg-almaty-day.png');
+}
+
+/* ── Dark theme (night background) ── */
+.dark {
+  --background: transparent;
+  --foreground: #ffffff;
+  --card: rgba(0, 0, 0, 0.35);
+  --card-foreground: #ffffff;
+  --popover: rgba(0, 0, 0, 0.5);
+  --popover-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #0a0a0a;
+  --secondary: rgba(255, 255, 255, 0.08);
+  --secondary-foreground: #ffffff;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(255, 255, 255, 0.5);
+  --accent: rgba(255, 255, 255, 0.1);
+  --accent-foreground: #ffffff;
+  --destructive: #ff453a;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: rgba(255, 255, 255, 0.4);
+  --chart-1: #ffffff;
+  --chart-2: rgba(255, 255, 255, 0.7);
+  --chart-3: rgba(255, 255, 255, 0.5);
+  --chart-4: rgba(255, 255, 255, 0.3);
+  --chart-5: rgba(255, 255, 255, 0.15);
+  --sidebar: transparent;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: rgba(255, 255, 255, 0.1);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-ring: rgba(255, 255, 255, 0.4);
+
+  --hud-text: #ffffff;
+  --hud-muted: rgba(255, 255, 255, 0.5);
+  --hud-glass: rgba(0, 0, 0, 0.3);
+  --hud-glass-border: rgba(255, 255, 255, 0.1);
+  --hud-success: #30d158;
+  --hud-warning: #ff9f0a;
+  --hud-danger: #ff453a;
+
+  --hud-bg-image: linear-gradient(135deg, #0a1628 0%, #1a0a28 50%, #0a1628 100%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Full-screen background */
+.hud-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--hud-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dark .hud-background {
+  background-image: var(--hud-bg-image);
+}
+
+/* Glass card — transparent panel over background */
+.glass-card {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Legacy alias */
+.dash-card {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+}
