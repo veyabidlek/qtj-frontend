@@ -17,6 +17,7 @@ export interface TelemetrySnapshot {
   tractionEffort: number;
   efficiency: number;
   position: TelemetryPosition;
+  trainState: "stopped" | "moving" | "approaching_station";
 }
 
 export type ConnectionStatus = "connected" | "reconnecting" | "disconnected";
