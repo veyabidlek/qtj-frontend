@@ -60,13 +60,13 @@ function MiniGauge({ score }: { score: number }) {
 
 function SystemStatusInner({ breakdown, health }: SystemStatusProps) {
   return (
-    <div className="glass-card px-5 py-4">
-      <h3 className="text-sm font-medium text-hud-muted uppercase tracking-widest mb-3">
+    <div className="glass-card px-4 xl:px-5 py-3 xl:py-4">
+      <h3 className="text-xs xl:text-sm font-medium text-hud-muted uppercase tracking-widest mb-2 xl:mb-3">
         System Analysis
       </h3>
-      <div className="flex gap-5 items-center">
+      <div className="flex gap-4 xl:gap-5 items-center">
         {health && <MiniGauge score={health.score} />}
-        <div className="space-y-3 flex-1">
+        <div className="space-y-2 xl:space-y-3 flex-1">
           {SYSTEMS.map((sys) => {
             const value = breakdown[sys.key];
             const color = getHealthColor(value);

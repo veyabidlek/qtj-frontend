@@ -45,7 +45,7 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
   }, [history, window.seconds]);
 
   return (
-    <div className="glass-card px-4 py-3">
+    <div className="glass-card px-4 py-3 flex-1 min-h-0 flex flex-col">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-[10px] font-medium text-hud-muted uppercase tracking-widest">
           {title}
@@ -67,7 +67,7 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={180}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={100}>
         <LineChart data={filteredData}>
           <CartesianGrid stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
           <XAxis

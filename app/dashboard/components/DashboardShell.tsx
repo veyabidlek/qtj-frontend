@@ -63,7 +63,7 @@ export default function DashboardShell() {
   }
 
   return (
-    <div className="flex min-h-screen text-white transition-colors duration-200">
+    <div className="flex h-screen overflow-hidden text-white transition-colors duration-200">
       {/* Full-screen background video */}
       <video
         className="fixed inset-0 z-0 h-full w-full object-cover"
@@ -144,9 +144,9 @@ export default function DashboardShell() {
 
         {/* ═══ OVERVIEW: HUD — left column | center open | right column ═══ */}
         {activeTab === "overview" && (
-          <div className="h-screen p-4 lg:p-5 flex gap-3">
+          <div className="h-screen p-3 xl:p-5 flex gap-2 xl:gap-3">
             {/* ── LEFT COLUMN ── */}
-            <div className="w-[320px] shrink-0 flex flex-col gap-3">
+            <div className="w-[260px] lg:w-[280px] xl:w-[320px] shrink-0 flex flex-col gap-2 xl:gap-3 min-h-0">
               {/* Speed */}
               <ErrorBoundary>
                 <SpeedCard
@@ -170,7 +170,7 @@ export default function DashboardShell() {
             </div>
 
             {/* ── CENTER — open for train background ── */}
-            <div className="flex-1 flex flex-col justify-between min-w-0">
+            <div className="flex-1 flex flex-col justify-between min-w-0 min-h-0">
               {/* Top center: Vehicle Data */}
               <ErrorBoundary>
                 <QuickMetrics snapshot={snapshot} />
@@ -232,7 +232,7 @@ export default function DashboardShell() {
             </div>
 
             {/* ── RIGHT COLUMN ── */}
-            <div className="w-[320px] shrink-0 flex flex-col gap-3">
+            <div className="w-[260px] lg:w-[280px] xl:w-[320px] shrink-0 flex flex-col gap-2 xl:gap-3 min-h-0">
               {/* System Analysis */}
               <ErrorBoundary>
                 <SystemStatus breakdown={health.breakdown} />
@@ -249,29 +249,29 @@ export default function DashboardShell() {
 
               {/* Efficiency + Traction + Current row */}
               <div className="grid grid-cols-3 gap-2">
-                <div className="glass-card px-3 py-2.5 text-center">
+                <div className="glass-card px-2 xl:px-3 py-2 xl:py-2.5 text-center">
                   <p className="text-[9px] text-white/70 uppercase tracking-widest">
                     КПД
                   </p>
-                  <p className="font-mono text-xl font-bold text-white leading-none mt-1">
+                  <p className="font-mono text-lg xl:text-xl font-bold text-white leading-none mt-1">
                     {Math.round(snapshot.efficiency)}
                     <span className="text-white/60 text-xs">%</span>
                   </p>
                 </div>
-                <div className="glass-card px-3 py-2.5 text-center">
+                <div className="glass-card px-2 xl:px-3 py-2 xl:py-2.5 text-center">
                   <p className="text-[9px] text-white/70 uppercase tracking-widest">
                     Тяга
                   </p>
-                  <p className="font-mono text-xl font-bold text-white leading-none mt-1">
+                  <p className="font-mono text-lg xl:text-xl font-bold text-white leading-none mt-1">
                     {formatMetricValue(snapshot.tractionEffort, 0)}
                     <span className="text-white/60 text-xs">кН</span>
                   </p>
                 </div>
-                <div className="glass-card px-3 py-2.5 text-center">
+                <div className="glass-card px-2 xl:px-3 py-2 xl:py-2.5 text-center">
                   <p className="text-[9px] text-white/70 uppercase tracking-widest">
                     Ток
                   </p>
-                  <p className="font-mono text-xl font-bold text-white leading-none mt-1">
+                  <p className="font-mono text-lg xl:text-xl font-bold text-white leading-none mt-1">
                     {formatMetricValue(snapshot.current, 0)}
                     <span className="text-white/60 text-xs">А</span>
                   </p>

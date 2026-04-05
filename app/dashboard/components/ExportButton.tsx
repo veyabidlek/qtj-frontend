@@ -3,13 +3,11 @@
 import { memo, useState } from "react";
 import { ArrowDownTrayIcon, PrinterIcon } from "@heroicons/react/24/outline";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-
 function ExportButtonInner() {
   const [open, setOpen] = useState(false);
 
   function downloadCSV() {
-    const url = `${API_URL}/api/history/export?minutes=60`;
+    const url = `/api/history/export?minutes=60`;
     const link = document.createElement("a");
     link.href = url;
     link.download = "";

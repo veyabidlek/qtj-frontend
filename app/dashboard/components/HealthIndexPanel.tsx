@@ -45,9 +45,9 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
   const color = getHealthColor(health.score);
 
   return (
-    <div className="glass-card px-5 py-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-white/80 uppercase tracking-widest">
+    <div className="glass-card px-4 xl:px-5 py-3 xl:py-4 flex-1 min-h-0 overflow-y-auto">
+      <div className="flex items-center justify-between mb-2 xl:mb-4">
+        <h3 className="text-xs xl:text-sm font-medium text-white/80 uppercase tracking-widest">
           Индекс здоровья
         </h3>
         <TooltipProvider>
@@ -65,10 +65,10 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
       </div>
 
       {/* Score + Grade */}
-      <div className="flex items-center gap-5 mb-4">
+      <div className="flex items-center gap-4 xl:gap-5 mb-2 xl:mb-4">
         {/* Gauge */}
         <div className="relative shrink-0">
-          <svg width={90} height={90} viewBox="0 0 90 90">
+          <svg className="w-[70px] h-[70px] xl:w-[90px] xl:h-[90px]" viewBox="0 0 90 90">
             <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={7} />
             <circle
               cx="45" cy="45" r="36" fill="none"
@@ -100,7 +100,7 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
       </div>
 
       {/* Breakdown with weights */}
-      <div className="space-y-2.5 mb-4">
+      <div className="space-y-1.5 xl:space-y-2.5 mb-2 xl:mb-4">
         {(Object.keys(SYSTEM_LABELS) as (keyof typeof SYSTEM_LABELS)[]).map((key) => {
           const value = health.breakdown[key as keyof typeof health.breakdown];
           const barColor = getHealthColor(value);
