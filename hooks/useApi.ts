@@ -1,8 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import client from "@/lib/api";
 import type { components } from "@/types/api";
+
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY ?? "";
 
 // ── Re-export schema types for convenience ──
 export type HealthIndex = components["schemas"]["HealthIndex"];
@@ -135,7 +137,7 @@ export function useRouteStatus(refetchInterval = 3000) {
 
 // ── System health check ──
 
-export function useHealthz() {
+export function useHealthz(refetchInterval = 30000) {
   return useQuery({
     queryKey: ["healthz"],
     queryFn: async () => {
@@ -143,6 +145,58 @@ export function useHealthz() {
       if (error) throw error;
       return data;
     },
-    refetchInterval: 30000,
+    refetchInterval,
+  });
+}
+
+// ── Mutations ──
+
+export function useSetScenario() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (scenario: string) => {
+      const { data, error } = await client.POST("/api/scenario", {
+        params: { query: { scenario } },
+        headers: { "X-API-Key": API_KEY },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["healthz"] });
+    },
+  });
+}
+
+export function useStartRoute() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (routeId: string) => {
+      const { data, error } = await client.POST("/api/route/start", {
+        params: { query: { route_id: routeId } },
+        headers: { "X-API-Key": API_KEY },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["routeStatus"] });
+    },
+  });
+}
+
+export function useReloadHealthConfig() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const { data, error } = await client.GET("/api/health/config/reload", {
+        headers: { "X-API-Key": API_KEY },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["health"] });
+    },
   });
 }
