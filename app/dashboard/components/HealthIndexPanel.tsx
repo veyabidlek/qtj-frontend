@@ -81,7 +81,7 @@ function HealthIndexPanelInner({ health }: HealthIndexPanelProps) {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-mono text-2xl font-bold text-white leading-none">{health.score}</span>
+            <span className="font-mono text-2xl font-bold text-white leading-none">{Math.round(health.score)}</span>
             <span className="font-mono text-sm font-bold mt-0.5" style={{ color }}>
               {health.grade}
             </span>

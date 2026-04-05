@@ -59,7 +59,7 @@ function HealthGaugeInner({ score, grade }: HealthGaugeProps) {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-mono text-4xl font-bold text-white" style={{ lineHeight: 1 }}>
-            {score}
+            {Math.round(score)}
           </span>
           <span className="font-mono text-lg font-bold mt-0.5" style={{ color }}>
             / {displayGrade}

@@ -82,6 +82,7 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
             axisLine={false}
             tickLine={false}
             width={35}
+            tickFormatter={(v: number) => v.toFixed(0)}
           />
           <Tooltip
             contentStyle={{
@@ -92,6 +93,7 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
               color: "#ffffff",
               fontSize: 11,
             }}
+            formatter={(value) => Number(value).toFixed(2)}
           />
           <Legend wrapperStyle={{ fontSize: 10, color: "rgba(255,255,255,0.7)", paddingTop: 4 }} />
           {series.map((s) => (

@@ -51,7 +51,7 @@ function MiniGauge({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-mono text-2xl font-bold text-hud-text leading-none">{score}</span>
+        <span className="font-mono text-2xl font-bold text-hud-text leading-none">{Math.round(score)}</span>
         <span className="text-[9px] text-hud-muted uppercase tracking-wider mt-0.5">индекс</span>
       </div>
     </div>

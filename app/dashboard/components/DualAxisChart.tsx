@@ -67,10 +67,11 @@ function DualAxisChartInner({
         <ComposedChart data={data}>
           <CartesianGrid stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
           <XAxis dataKey="time" tick={{ fill: "rgba(255,255,255,0.7)", fontSize: 9 }} axisLine={false} tickLine={false} interval="preserveStartEnd" />
-          <YAxis yAxisId="left" tick={{ fill: leftColor, fontSize: 9 }} axisLine={false} tickLine={false} width={35} />
-          <YAxis yAxisId="right" orientation="right" tick={{ fill: rightColor, fontSize: 9 }} axisLine={false} tickLine={false} width={35} />
+          <YAxis yAxisId="left" tick={{ fill: leftColor, fontSize: 9 }} axisLine={false} tickLine={false} width={35} tickFormatter={(v: number) => v.toFixed(0)} />
+          <YAxis yAxisId="right" orientation="right" tick={{ fill: rightColor, fontSize: 9 }} axisLine={false} tickLine={false} width={35} tickFormatter={(v: number) => v.toFixed(0)} />
           <Tooltip
             contentStyle={{ backgroundColor: "rgba(15,23,42,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "10px", color: "#fff", fontSize: 11 }}
+            formatter={(value) => Number(value).toFixed(2)}
           />
           <Legend wrapperStyle={{ fontSize: 10, color: "rgba(255,255,255,0.7)" }} />
           {referenceLine && (
