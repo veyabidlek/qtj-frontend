@@ -4,73 +4,14 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import type { TelemetrySnapshot, TelemetryAlert, ConnectionStatus } from "@/types/telemetry";
 import {
   WS_URL,
-  MOCK_MODE,
   BUFFER_FLUSH_INTERVAL,
   MAX_HISTORY_POINTS,
-  MOCK_TICK_INTERVAL,
   RECONNECT,
   THRESHOLDS,
   ERROR_CODES,
 } from "@/config/constants";
-import { clampValue } from "@/lib/smoothing";
 import { logger } from "@/lib/logger";
 
-function generateMockSnapshot(prev: TelemetrySnapshot | null): TelemetrySnapshot {
-  const now = Date.now();
-  if (!prev) {
-    return {
-      timestamp: now,
-      speed: 80,
-      temperature: 72,
-      oilTemperature: 85,
-      vibration: 2.1,
-      voltage: 25.0,
-      current: 420,
-      fuelLevel: 87,
-      fuelConsumption: 180,
-      brakePressure: 0.55,
-      tractionEffort: 220,
-      efficiency: 88,
-      position: { lat: 43.238, lng: 76.946 },
-    };
-  }
-
-  const drift = (range: number) => (Math.random() - 0.5) * range;
-
-  const speed = clampValue(prev.speed + drift(8), 0, 200);
-  const temperature = clampValue(prev.temperature + drift(2) + (speed > 120 ? 0.3 : -0.1), 40, 120);
-  const oilTemperature = clampValue(prev.oilTemperature + drift(1.5), 60, 150);
-  const vibration = clampValue(prev.vibration + drift(0.5), 0.5, 10);
-  const voltage = clampValue(prev.voltage + drift(0.3), 20, 30);
-  const current = clampValue(prev.current + drift(30), 100, 1000);
-  const fuelLevel = clampValue(prev.fuelLevel - Math.random() * 0.05, 0, 100);
-  const fuelConsumption = clampValue(prev.fuelConsumption + drift(15), 80, 500);
-  const brakePressure = clampValue(prev.brakePressure + drift(0.03), 0.1, 1.0);
-  const tractionEffort = clampValue(speed * 2.5 + drift(20), 0, 500);
-  const efficiency = clampValue(prev.efficiency + drift(2), 40, 100);
-
-  const latStep = 0.002 * (Math.random() * 0.5 + 0.5);
-  const lngStep = -0.001 * (Math.random() * 0.5 + 0.5);
-
-  return {
-    timestamp: now,
-    speed,
-    temperature,
-    oilTemperature,
-    vibration,
-    voltage,
-    current,
-    fuelLevel,
-    fuelConsumption,
-    brakePressure,
-    tractionEffort,
-    efficiency,
-    position: {
-      lat: prev.position.lat + latStep,
-      lng: prev.position.lng + lngStep,
-    },
-  };
-}
 
 function checkAlerts(snapshot: TelemetrySnapshot): TelemetryAlert[] {
   const alerts: TelemetryAlert[] = [];
@@ -154,7 +95,7 @@ export function useWebSocket(): UseWebSocketReturn {
   const [snapshot, setSnapshot] = useState<TelemetrySnapshot | null>(null);
   const [history, setHistory] = useState<TelemetrySnapshot[]>([]);
   const [alerts, setAlerts] = useState<TelemetryAlert[]>([]);
-  const [status, setStatus] = useState<ConnectionStatus>(MOCK_MODE ? "connected" : "disconnected");
+  const [status, setStatus] = useState<ConnectionStatus>("disconnected");
 
   const bufferRef = useRef<TelemetrySnapshot[]>([]);
   const historyRef = useRef<TelemetrySnapshot[]>([]);
@@ -189,21 +130,10 @@ export function useWebSocket(): UseWebSocketReturn {
     return () => clearInterval(interval);
   }, []);
 
-  // Mock mode
+
+
+  // WebSocket connection
   useEffect(() => {
-    if (!MOCK_MODE) return;
-
-    const interval = setInterval(() => {
-      const next = generateMockSnapshot(lastSnapshotRef.current);
-      processSnapshot(next);
-    }, MOCK_TICK_INTERVAL);
-
-    return () => clearInterval(interval);
-  }, [processSnapshot]);
-
-  // Real WebSocket mode
-  useEffect(() => {
-    if (MOCK_MODE) return;
 
     let reconnectTimeout: NodeJS.Timeout;
     let mounted = true;

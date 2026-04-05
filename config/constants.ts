@@ -1,11 +1,9 @@
 import type { HealthGrade } from "@/types/health";
 
 export const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? "";
-export const MOCK_MODE = !WS_URL;
 
 export const BUFFER_FLUSH_INTERVAL = 200;
 export const MAX_HISTORY_POINTS = 300;
-export const MOCK_TICK_INTERVAL = 1000;
 
 export const RECONNECT = {
   initialDelay: 1000,
