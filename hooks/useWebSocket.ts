@@ -59,7 +59,13 @@ export function useWebSocket(): UseWebSocketReturn {
     function connect() {
       if (!mounted) return;
 
-      const ws = new WebSocket(WS_URL);
+      // Build absolute WS URL from relative path (for Next.js rewrites proxy)
+      let wsUrl = WS_URL;
+      if (wsUrl.startsWith("/")) {
+        const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
+        wsUrl = `${proto}//${window.location.host}${wsUrl}`;
+      }
+      const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
 
       ws.onopen = () => {
