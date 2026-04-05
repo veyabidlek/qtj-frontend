@@ -3,6 +3,8 @@ export interface TelemetryPosition {
   lng: number;
 }
 
+export type TrainState = "moving" | "approaching_station" | "stopped";
+
 export interface TelemetrySnapshot {
   timestamp: number;
   speed: number;
@@ -17,8 +19,8 @@ export interface TelemetrySnapshot {
   tractionEffort: number;
   efficiency: number;
   position: TelemetryPosition;
-  trainState: "stopped" | "moving" | "approaching_station";
-  backgroundKey: string;
+  trainState?: TrainState;
+  backgroundKey?: string;
 }
 
 export type ConnectionStatus = "connected" | "reconnecting" | "disconnected";

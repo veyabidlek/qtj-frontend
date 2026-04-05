@@ -25,7 +25,7 @@ export function useRouteProgress(speed: number): RouteProgress {
     const remaining = TOTAL_ROUTE_KM - distanceTraveled;
     const etaMinutes = speed > 5 ? (remaining / speed) * 60 : 0;
 
-    const currentStation = routeStatus?.current_station ?? ROUTE_STATIONS[0].name;
+    const currentStation = routeStatus?.current_station ?? "Кульсары";
     // null means route completed — fall back to current station
     const nextStationName = routeStatus?.next_station ?? currentStation;
     const nextStationData = ROUTE_STATIONS.find((s) => s.name === nextStationName);

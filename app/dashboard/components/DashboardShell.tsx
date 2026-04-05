@@ -21,6 +21,7 @@ import SystemStatus from "./SystemStatus";
 import SpeedCard from "./SpeedCard";
 import { formatMetricValue } from "@/lib/formatters";
 import HealthIndexPanel from "./HealthIndexPanel";
+import StationBackground from "./StationBackground";
 import TractionTab from "./tabs/TractionTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import MonitoringTab from "./tabs/MonitoringTab";
@@ -45,15 +46,7 @@ export default function DashboardShell() {
   if (!snapshot || !health) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <video
-          className="fixed inset-0 z-0 h-full w-full object-cover"
-          src="/background-videos/bg-train.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
-        <div className="fixed inset-0 z-0 bg-black/20 dark:bg-black/50" />
+        <StationBackground backgroundKey="qulsary-image" />
         <div className="flex flex-col items-center gap-4 z-10">
           <div className="h-10 w-10 rounded-full border-2 border-white border-t-transparent animate-spin" />
           <p className="text-white/60 text-sm">Ожидание данных телеметрии...</p>
@@ -64,16 +57,8 @@ export default function DashboardShell() {
 
   return (
     <div className="flex h-screen overflow-hidden text-white transition-colors duration-200">
-      {/* Full-screen background video */}
-      <video
-        className="fixed inset-0 z-0 h-full w-full object-cover"
-        src="/background-videos/bg-train.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
-      <div className="fixed inset-0 z-0 bg-black/20 dark:bg-black/50" />
+      {/* Station-aware background */}
+      <StationBackground backgroundKey={snapshot.backgroundKey ?? "qulsary-image"} />
 
       {/* Sidebar */}
       <Sidebar

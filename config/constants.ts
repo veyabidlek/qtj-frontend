@@ -102,16 +102,13 @@ export interface RouteStation {
 }
 
 export const ROUTE_STATIONS: RouteStation[] = [
-  { name: "Алматы-1", lat: 43.238, lng: 76.946, km: 0 },
-  { name: "Капшагай", lat: 43.88, lng: 77.07, km: 80 },
-  { name: "Талдыкорган", lat: 45.02, lng: 78.38, km: 270 },
-  { name: "Сарышаган", lat: 46.12, lng: 73.62, km: 480 },
-  { name: "Балхаш", lat: 46.85, lng: 74.98, km: 590 },
-  { name: "Караганда", lat: 49.80, lng: 73.10, km: 900 },
-  { name: "Астана", lat: 51.13, lng: 71.43, km: 1300 },
+  { name: "Кульсары", lat: 46.9667, lng: 54.0167, km: 0 },
+  { name: "Актау", lat: 43.6500, lng: 51.1500, km: 500 },
+  { name: "Алматы", lat: 43.2380, lng: 76.9460, km: 2100 },
+  { name: "Астана", lat: 51.1694, lng: 71.4491, km: 3400 },
 ] as const;
 
-export const TOTAL_ROUTE_KM = 1300;
+export const TOTAL_ROUTE_KM = 3400;
 
 export interface SpeedZone {
   startKm: number;
