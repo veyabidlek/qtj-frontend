@@ -11,10 +11,11 @@ export const RECONNECT = {
   multiplier: 2,
 } as const;
 
+// Simulator runs 1:1 real-time. Default route ~3 min, alternate ~5 min.
 export const TIME_WINDOWS = [
   { label: "1 мин", seconds: 60 },
+  { label: "3 мин", seconds: 180 },
   { label: "5 мин", seconds: 300 },
-  { label: "15 мин", seconds: 900 },
 ] as const;
 
 export const HEALTH_WEIGHTS = {

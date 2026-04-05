@@ -21,7 +21,6 @@ import SystemStatus from "./SystemStatus";
 import SpeedCard from "./SpeedCard";
 import { formatMetricValue } from "@/lib/formatters";
 import HealthIndexPanel from "./HealthIndexPanel";
-import ReplaySlider from "./ReplaySlider";
 import TractionTab from "./tabs/TractionTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import MonitoringTab from "./tabs/MonitoringTab";
@@ -39,10 +38,7 @@ export default function DashboardShell() {
   const eHist = replay.effectiveHistory;
   const eAlerts = replay.effectiveAlerts;
 
-  const routeProgress = useRouteProgress(
-    eSnap?.position ?? { lat: 43.238, lng: 76.946 },
-    eSnap?.speed ?? 0
-  );
+  const routeProgress = useRouteProgress(eSnap?.speed ?? 0);
 
   useEffect(() => setMounted(true), []);
 
@@ -186,28 +182,43 @@ export default function DashboardShell() {
                   <MapPinIcon className="h-5 w-5 text-white/70 shrink-0" />
                   <div>
                     <p className="text-[10px] text-white/70 uppercase tracking-widest">
-                      Маршрут
+                      Текущая станция
                     </p>
                     <p className="text-sm font-semibold text-white">
-                      Алматы → Астана
+                      {routeProgress.currentStation}
                     </p>
                   </div>
                   <div className="h-6 w-px bg-white/15" />
-                  <div>
-                    <p className="text-[10px] text-white/70 uppercase tracking-widest">
-                      Регион
-                    </p>
-                    <p className="text-sm font-medium text-white">
-                      Алматинская обл.
-                    </p>
-                  </div>
-                  <div className="h-6 w-px bg-white/15" />
-                  <div>
-                    <p className="text-[10px] text-white/70 uppercase tracking-widest">
-                      След. станция
-                    </p>
-                    <p className="text-sm font-medium text-white">Капшагай</p>
-                  </div>
+                  {routeProgress.currentStation === routeProgress.nextStation.name ? (
+                    <div>
+                      <p className="text-[10px] text-hud-success uppercase tracking-widest">
+                        Маршрут завершён
+                      </p>
+                      <p className="text-sm font-medium text-hud-success">
+                        Прибыли: {routeProgress.currentStation}
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div>
+                        <p className="text-[10px] text-white/70 uppercase tracking-widest">
+                          След. станция
+                        </p>
+                        <p className="text-sm font-medium text-white">
+                          {routeProgress.nextStation.name}
+                        </p>
+                      </div>
+                      <div className="h-6 w-px bg-white/15" />
+                      <div>
+                        <p className="text-[10px] text-white/70 uppercase tracking-widest">
+                          Прогресс
+                        </p>
+                        <p className="text-sm font-mono font-medium text-white">
+                          {routeProgress.progressPercent}%
+                        </p>
+                      </div>
+                    </>
+                  )}
                   <div className="flex-1" />
                   <button
                     onClick={() => setActiveTab("context")}
@@ -280,18 +291,19 @@ export default function DashboardShell() {
               <ResourcesTab snapshot={eSnap} history={eHist} />
             )}
             {activeTab === "monitoring" && (
-              <MonitoringTab snapshot={eSnap} history={eHist} alerts={eAlerts} health={health} />
+              <MonitoringTab
+                snapshot={eSnap}
+                history={eHist}
+                fullHistory={history}
+                alerts={eAlerts}
+                health={health}
+                replayTimestamp={replay.replayTimestamp}
+                onReplayChange={replay.setReplayTimestamp}
+              />
             )}
             {activeTab === "context" && (
               <ContextTab snapshot={eSnap} history={eHist} routeProgress={routeProgress} />
             )}
-
-            {/* Replay slider */}
-            <ReplaySlider
-              history={history}
-              replayTimestamp={replay.replayTimestamp}
-              onTimestampChange={replay.setReplayTimestamp}
-            />
           </div>
         )}
       </main>

@@ -10,17 +10,21 @@ import TrendCharts, { ENGINE_SERIES } from "../TrendCharts";
 import AlertsPanel from "../AlertsPanel";
 import AlertFilters from "../AlertFilters";
 import ExportButton from "../ExportButton";
+import ReplaySlider from "../ReplaySlider";
 import type { TelemetrySnapshot, TelemetryAlert, AlertSeverity } from "@/types/telemetry";
 import type { HealthIndex } from "@/types/health";
 
 interface MonitoringTabProps {
   snapshot: TelemetrySnapshot;
   history: TelemetrySnapshot[];
+  fullHistory: TelemetrySnapshot[];
   alerts: TelemetryAlert[];
   health: HealthIndex;
+  replayTimestamp: number | null;
+  onReplayChange: (ts: number | null) => void;
 }
 
-export default function MonitoringTab({ snapshot, history, alerts, health }: MonitoringTabProps) {
+export default function MonitoringTab({ snapshot, history, fullHistory, alerts, health, replayTimestamp, onReplayChange }: MonitoringTabProps) {
   const [severityFilter, setSeverityFilter] = useState<AlertSeverity | "all">("all");
 
   const filteredAlerts = useMemo(
@@ -44,7 +48,7 @@ export default function MonitoringTab({ snapshot, history, alerts, health }: Mon
             <HealthGauge score={health.score} grade={health.grade} />
           </div>
           <SystemStatus breakdown={health.breakdown} health={health} />
-          <RecommendationsPanel snapshot={snapshot} health={health} />
+          <RecommendationsPanel />
         </div>
       </ErrorBoundary>
 
@@ -63,12 +67,19 @@ export default function MonitoringTab({ snapshot, history, alerts, health }: Mon
         <TrendCharts history={history} series={ENGINE_SERIES} title="Мониторинг узлов" />
       </ErrorBoundary>
 
+      {/* Replay slider */}
+      <ReplaySlider
+        history={fullHistory}
+        replayTimestamp={replayTimestamp}
+        onTimestampChange={onReplayChange}
+      />
+
       {/* Row 4: Alerts */}
       <ErrorBoundary>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <AlertFilters active={severityFilter} onChange={setSeverityFilter} counts={counts} />
-            <ExportButton history={history} />
+            <ExportButton />
           </div>
           <AlertsPanel alerts={filteredAlerts} maxItems={50} />
         </div>

@@ -1,14 +1,15 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { ShieldExclamationIcon, ExclamationTriangleIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
-import type { TelemetrySnapshot } from "@/types/telemetry";
-import type { HealthIndex } from "@/types/health";
-import { getRecommendations } from "@/lib/recommendations";
+import { useRecommendations } from "@/hooks/useApi";
 
-interface RecommendationsPanelProps {
-  snapshot: TelemetrySnapshot;
-  health: HealthIndex;
+interface Recommendation {
+  id: string;
+  priority: "high" | "medium" | "low";
+  title: string;
+  description: string;
+  parameter: string;
 }
 
 const PRIORITY_CONFIG = {
@@ -17,11 +18,9 @@ const PRIORITY_CONFIG = {
   low: { icon: InformationCircleIcon, color: "text-white/70", bg: "bg-white/10", label: "Низкий" },
 } as const;
 
-function RecommendationsPanelInner({ snapshot, health }: RecommendationsPanelProps) {
-  const recommendations = useMemo(
-    () => getRecommendations(snapshot, health).slice(0, 5),
-    [snapshot, health]
-  );
+function RecommendationsPanelInner() {
+  const { data } = useRecommendations(10000);
+  const recommendations = ((data?.data as unknown as Recommendation[]) ?? []).slice(0, 5);
 
   return (
     <div className="glass-card px-5 py-4 h-full flex flex-col">

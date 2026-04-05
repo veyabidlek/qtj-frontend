@@ -1,44 +1,37 @@
 "use client";
 
 import { useMemo } from "react";
-import type { TelemetryPosition } from "@/types/telemetry";
-import { ROUTE_STATIONS, TOTAL_ROUTE_KM, SPEED_LIMIT_ZONES } from "@/config/constants";
-
-function haversineKm(a: TelemetryPosition, b: { lat: number; lng: number }): number {
-  const R = 6371;
-  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
-  const dLng = ((b.lng - a.lng) * Math.PI) / 180;
-  const sinLat = Math.sin(dLat / 2);
-  const sinLng = Math.sin(dLng / 2);
-  const h = sinLat * sinLat + Math.cos((a.lat * Math.PI) / 180) * Math.cos((b.lat * Math.PI) / 180) * sinLng * sinLng;
-  return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-}
+import { useRouteStatus } from "@/hooks/useApi";
+import { TOTAL_ROUTE_KM, SPEED_LIMIT_ZONES, ROUTE_STATIONS } from "@/config/constants";
 
 export interface RouteProgress {
   progressPercent: number;
   distanceTraveled: number;
   totalDistance: number;
   etaMinutes: number;
+  currentStation: string;
   nextStation: { name: string; distanceKm: number };
   currentSpeedLimit: number;
 }
 
-export function useRouteProgress(position: TelemetryPosition, speed: number): RouteProgress {
+export function useRouteProgress(speed: number): RouteProgress {
+  const { data: routeStatus } = useRouteStatus(3000);
+
   return useMemo(() => {
-    const distFromStart = haversineKm(ROUTE_STATIONS[0], position);
-    const distanceTraveled = Math.min(distFromStart, TOTAL_ROUTE_KM);
-    const progressPercent = (distanceTraveled / TOTAL_ROUTE_KM) * 100;
+    const progressRaw = routeStatus?.progress ?? 0;
+    const progressPercent = Math.round(progressRaw * 100);
+    const distanceTraveled = progressRaw * TOTAL_ROUTE_KM;
 
     const remaining = TOTAL_ROUTE_KM - distanceTraveled;
     const etaMinutes = speed > 5 ? (remaining / speed) * 60 : 0;
 
-    let nextStation = { name: ROUTE_STATIONS[ROUTE_STATIONS.length - 1].name, distanceKm: remaining };
-    for (const station of ROUTE_STATIONS) {
-      if (station.km > distanceTraveled) {
-        nextStation = { name: station.name, distanceKm: station.km - distanceTraveled };
-        break;
-      }
-    }
+    const currentStation = routeStatus?.current_station ?? ROUTE_STATIONS[0].name;
+    // null means route completed — fall back to current station
+    const nextStationName = routeStatus?.next_station ?? currentStation;
+    const nextStationData = ROUTE_STATIONS.find((s) => s.name === nextStationName);
+    const nextStationDistanceKm = nextStationData
+      ? Math.max(0, nextStationData.km - distanceTraveled)
+      : remaining;
 
     let currentSpeedLimit = 120;
     for (const zone of SPEED_LIMIT_ZONES) {
@@ -48,6 +41,14 @@ export function useRouteProgress(position: TelemetryPosition, speed: number): Ro
       }
     }
 
-    return { progressPercent, distanceTraveled, totalDistance: TOTAL_ROUTE_KM, etaMinutes, nextStation, currentSpeedLimit };
-  }, [position, speed]);
+    return {
+      progressPercent,
+      distanceTraveled,
+      totalDistance: TOTAL_ROUTE_KM,
+      etaMinutes,
+      currentStation,
+      nextStation: { name: nextStationName, distanceKm: nextStationDistanceKm },
+      currentSpeedLimit,
+    };
+  }, [routeStatus, speed]);
 }

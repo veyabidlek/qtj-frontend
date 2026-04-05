@@ -36,7 +36,7 @@ export function useHealth(refetchInterval = 5000) {
 
 // ── Alerts ──
 
-export function useAlerts(severity?: string | null, limit = 50) {
+export function useAlerts(severity?: string, limit = 50) {
   return useQuery({
     queryKey: ["alerts", severity, limit],
     queryFn: async () => {

@@ -33,7 +33,9 @@ function TrendChartsInner({ history, series, title }: TrendChartsProps) {
   const window = TIME_WINDOWS[windowIdx];
 
   const filteredData = useMemo(() => {
-    const cutoff = Date.now() - window.seconds * 1000;
+    if (history.length === 0) return [];
+    const latest = history[history.length - 1].timestamp;
+    const cutoff = latest - window.seconds * 1000;
     return history
       .filter((s) => s.timestamp >= cutoff)
       .map((s) => ({
